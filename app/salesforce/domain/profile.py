@@ -8,15 +8,13 @@ class Profile():
     def __init__(
         self,
         profile_id  : str,
-        name        : str,
-        is_custom   : bool,
+        name        : str
     ) -> None:
         Validation.validate_required( "profile_id", profile_id )
         Validation.validate_required( "name", name )
 
         self._profile_id    = profile_id
         self._name          = name
-        self._is_custom     = is_custom
 
         self._object_permissions    = list()
         self._field_permissions     = list()
@@ -30,22 +28,12 @@ class Profile():
         return self._name
 
     @property
-    def is_custom( self ) -> bool:
-        return self._is_custom
-
-    @property
     def object_permissions( self ) -> list:
         return list( self._object_permissions )
 
     @property
     def field_permissions( self ) -> list:
         return list( self._field_permissions )
-
-    def is_custom_profile( self ) -> bool:
-        return self._is_custom
-
-    def is_standard_profile( self ) -> bool:
-        return not self._is_custom
 
     def add_object_permission(
         self,
@@ -61,11 +49,9 @@ class Profile():
 
     def __repr__(self) -> str:
         return (
-            "Profile("
-            f"profile_id        = '{ self._profile_id }', "
-            f"name              = '{ self._name }', "
-            f"is_custom         = { self._is_custom }"
-            ")"
+            "\n"
+            f"Profile ID        : { self.profile_id }\n"
+            f"Profile Name      : { self.name }\n"
         )
 
     def __eq__( self, other: object ) -> bool:

@@ -1,20 +1,14 @@
 from app.utils import Validation
+from app.salesforce.query import UserQueries
 from app.salesforce.mappers import UserMapper
 from app.salesforce.domain import SalesforceUser
-from app.salesforce.query import SoqlQueryExecutor, UserQueries
+from app.salesforce.repositories.base import BaseRepository
 
-class UserRepository:
+class UserRepository( BaseRepository[ SalesforceUser ] ):
     """
     Repository responsible for retrieving Salesforce users.
     """
     
-    def __init__( self, query_executor: SoqlQueryExecutor ) -> None:
-        self._query_executor    = query_executor
-        
-    @property
-    def query_executor( self ) -> SoqlQueryExecutor:
-        return self._query_executor
-        
     def find_by_username( self, username: str ) -> SalesforceUser | None:
         """
         Finds a Salesforce user by username.
@@ -62,12 +56,3 @@ class UserRepository:
             return None
         
         return UserMapper.from_record( record )
-    
-    @staticmethod
-    def _get_first_record( response: dict ) -> dict | None:
-        records = response.get( "records", [] )
-        
-        if not records:
-            return None
-        
-        return records[0]
