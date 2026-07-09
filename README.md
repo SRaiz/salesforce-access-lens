@@ -252,7 +252,7 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 
 ## Data Access Layer
 - [x] User Repository
-- [ ] Profile Repository
+- [x] Profile Repository
 - [ ] Permission Set Repository
 - [ ] Permission Set Group Repository
 - [ ] Object Permission Repository

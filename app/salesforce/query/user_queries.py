@@ -18,7 +18,7 @@ class UserQueries:
         escaped_username = cls._escape_soql_value( username )
 
         return cls._select_user_query(
-            where_clause = f"Username = '{escaped_username}'"
+            where_clause = f"Username = '{ escaped_username }'"
         )
 
     @classmethod
@@ -26,7 +26,7 @@ class UserQueries:
         escaped_email = cls._escape_soql_value( email )
 
         return cls._select_user_query(
-            where_clause = f"Email = '{escaped_email}'"
+            where_clause = f"Email = '{ escaped_email }'"
         )
 
     @classmethod
@@ -34,14 +34,14 @@ class UserQueries:
         escaped_user_id = cls._escape_soql_value( user_id )
 
         return cls._select_user_query(
-            where_clause = f"Id = '{escaped_user_id}'"
+            where_clause = f"Id = '{ escaped_user_id }'"
         )
 
     @classmethod
     def _select_user_query( cls, where_clause: str ) -> str:
         fields = ", ".join( cls.USER_FIELDS )
 
-        return f"SELECT {fields} FROM User WHERE {where_clause} LIMIT 1"
+        return f"SELECT { fields } FROM User WHERE { where_clause } LIMIT 1"
 
     @staticmethod
     def _escape_soql_value( value: str ) -> str:

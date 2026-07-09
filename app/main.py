@@ -3,7 +3,7 @@ from app.config import Environment, ConfigFactory
 from app.salesforce.auth import AuthConfig, JWTBuilder, OAuthClient, SalesforceAuthenticator
 from app.salesforce.client import SalesforceClient
 from app.salesforce.domain import SalesforceAuthSession, SalesforceConfig
-from app.salesforce.repositories import UserRepository
+from app.salesforce.repositories import UserRepository, ProfileRepository
 from app.salesforce.query import SoqlQueryExecutor
 
 def main() -> None:
@@ -48,6 +48,12 @@ def main() -> None:
 
     print( "User fetched successfully!" )
     print( user )
+    
+    profile_repository  : ProfileRepository         = ProfileRepository( query_executor )
+    profile = profile_repository.find_by_id( user.profile_id )
+    
+    print( "Profile fetched successfully!" )
+    print( profile )
 
 if __name__ == "__main__":
     main()
