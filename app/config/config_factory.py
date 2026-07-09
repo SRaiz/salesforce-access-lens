@@ -1,5 +1,5 @@
 from app.salesforce.auth import AuthConfig
-from app.salesforce.models import SalesforceConfig
+from app.salesforce.domain import SalesforceConfig
 from app.config import Environment
 
 class ConfigFactory:
