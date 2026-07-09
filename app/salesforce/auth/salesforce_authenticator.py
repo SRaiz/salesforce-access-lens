@@ -1,5 +1,5 @@
 from app.salesforce.auth import OAuthClient
-from app.salesforce.models import SalesforceAuthSession
+from app.salesforce.domain import SalesforceAuthSession
 
 
 class SalesforceAuthenticator:

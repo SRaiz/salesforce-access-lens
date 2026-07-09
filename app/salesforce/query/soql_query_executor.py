@@ -14,7 +14,7 @@ class SoqlQueryExecutor:
     ) -> None:
         self._client = client
         
-    def execute( self, query: str ):
+    def execute( self, query: str ) -> dict:
         """
         Executes a SOQL query against Salesforce.
         """
@@ -23,5 +23,7 @@ class SoqlQueryExecutor:
         
         return self._client.get(
             endpoint    = "query", 
-            params      = { "q" : f"{query}" }
+            params      = { 
+                "q" : f"{ query }"
+            }
         )        

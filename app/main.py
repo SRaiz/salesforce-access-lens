@@ -2,7 +2,9 @@ from dotenv import load_dotenv
 from app.config import Environment, ConfigFactory
 from app.salesforce.auth import AuthConfig, JWTBuilder, OAuthClient, SalesforceAuthenticator
 from app.salesforce.client import SalesforceClient
-from app.salesforce.models import SalesforceAuthSession, SalesforceConfig
+from app.salesforce.domain import SalesforceAuthSession, SalesforceConfig
+from app.salesforce.repositories import UserRepository
+from app.salesforce.query import SoqlQueryExecutor
 
 def main() -> None:
     
@@ -13,6 +15,7 @@ def main() -> None:
     # Then post getting the environment lets build the auth_config and sf_config
     config              : ConfigFactory             = ConfigFactory( environment )
     auth_config         : AuthConfig                = config.create_auth_config()
+    salesforce_config   : SalesforceConfig          = config.create_salesforce_config()
     
     # Lets create the jwt using jwt builder
     jwt_builder         : JWTBuilder                = JWTBuilder( auth_config )
@@ -32,6 +35,19 @@ def main() -> None:
             "Instance URL"  : sf_auth_session.instance_url, 
             "Token Type"    : sf_auth_session.token_type
         })
+        
+    salesforce_client = SalesforceClient(
+        session = sf_auth_session,
+        config  = salesforce_config
+    )
+    
+    query_executor      : SoqlQueryExecutor         = SoqlQueryExecutor( salesforce_client )
+    user_repository     : UserRepository            = UserRepository( query_executor )
+
+    user = user_repository.find_by_username( auth_config.username )
+
+    print( "User fetched successfully!" )
+    print( user )
 
 if __name__ == "__main__":
     main()

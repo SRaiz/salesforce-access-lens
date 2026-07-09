@@ -235,18 +235,42 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 
 # Roadmap
 
+## Foundation
 - [x] Project Setup
+- [x] Environment Configuration
 - [x] JWT Authentication
-- [ ] Salesforce REST Client
-- [ ] SOQL Query Executor
-- [ ] User Repository
+- [x] Salesforce REST Client
+- [x] SOQL Query Executor
+
+## Domain Layer
+- [x] SalesforceUser Entity
+- [x] Profile Entity
+- [ ] PermissionSet Entity
+- [ ] PermissionSetGroup Entity
+- [ ] ObjectPermission Entity
+- [ ] FieldPermission Entity
+
+## Data Access Layer
+- [x] User Repository
+- [ ] Profile Repository
 - [ ] Permission Set Repository
+- [ ] Permission Set Group Repository
 - [ ] Object Permission Repository
 - [ ] Field Permission Repository
+
+## Application Layer
 - [ ] Access Resolution Engine
+- [ ] Access Explanation Engine
+- [ ] Permission Analysis Service
+
+## MCP Integration
 - [ ] MCP Server
+- [ ] MCP Tools
+
+## Quality
 - [ ] Unit Tests
 - [ ] Integration Tests
+- [ ] Documentation
 
 ---
 

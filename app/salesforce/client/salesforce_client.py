@@ -1,6 +1,6 @@
 import requests
 
-from app.salesforce.models import SalesforceConfig, SalesforceAuthSession
+from app.salesforce.domain import SalesforceConfig, SalesforceAuthSession
 
 class SalesforceClient:
     
@@ -34,10 +34,10 @@ class SalesforceClient:
         url = f"{ self.base_url }/{ endpoint.lstrip('/') }"
         
         response = requests.get(
-            url = url, 
-            headers = self.headers, 
-            params = params, 
-            timeout = 30
+            url         = url, 
+            headers     = self.headers, 
+            params      = params, 
+            timeout     = 30
         )
         
         response.raise_for_status()
