@@ -7,6 +7,7 @@ from app.salesforce.repositories import (
     UserRepository, 
     ProfileRepository, 
     PermissionSetRepository, 
+    ObjectPermissionRepository, 
     PermissionSetAssignmentRepository
 )
 from app.salesforce.query import SoqlQueryExecutor
@@ -103,6 +104,35 @@ def main() -> None:
 
     for permission_set in assigned_permission_sets:
         print( permission_set )
+        
+    object_permission_repository = ObjectPermissionRepository(
+        query_executor
+    )
+
+    permission_set_ids = {
+        permission_set.permission_set_id
+        for permission_set in permission_sets
+    }
+
+    object_permissions = (
+        object_permission_repository.find_by_parent_ids(
+            permission_set_ids
+        )
+    )
+
+    print( "\nObject Permissions fetched successfully!" )
+    print( f"Object Permission Count: { len( object_permissions )}" )
+    
+    account_permissions = [
+        object_permission
+        for object_permission in object_permissions
+        if object_permission.sobject_type == "Account"
+    ]
+
+    print("\n================ Account Permissions ================\n")
+
+    for object_permission in account_permissions:
+        print( object_permission )
 
 if __name__ == "__main__":
     main()
