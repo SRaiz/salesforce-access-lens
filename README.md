@@ -105,7 +105,8 @@ salesforce-access-lens/
 │   ├── salesforce/
 │   │   ├── auth/
 │   │   ├── client/
-│   │   ├── models/
+│   │   ├── domain/
+│   │   ├── mappers/
 │   │   ├── query/
 │   │   ├── repositories/
 │   │   ├── services/
@@ -245,7 +246,8 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 ## Domain Layer
 - [x] SalesforceUser Entity
 - [x] Profile Entity
-- [ ] PermissionSet Entity
+- [x] PermissionSet Entity
+- [x] PermissionSetAssignment Entity
 - [ ] PermissionSetGroup Entity
 - [ ] ObjectPermission Entity
 - [ ] FieldPermission Entity
@@ -253,7 +255,8 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 ## Data Access Layer
 - [x] User Repository
 - [x] Profile Repository
-- [ ] Permission Set Repository
+- [x] Permission Set Repository
+- [x] Permission Set Assignment Repository
 - [ ] Permission Set Group Repository
 - [ ] Object Permission Repository
 - [ ] Field Permission Repository

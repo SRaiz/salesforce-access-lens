@@ -41,7 +41,12 @@ class UserQueries:
     def _select_user_query( cls, where_clause: str ) -> str:
         fields = ", ".join( cls.USER_FIELDS )
 
-        return f"SELECT { fields } FROM User WHERE { where_clause } LIMIT 1"
+        return (
+            "SELECT "
+            f"{ fields } "
+            "FROM User "
+            f"WHERE { where_clause } LIMIT 1"
+        )
 
     @staticmethod
     def _escape_soql_value( value: str ) -> str:

@@ -21,7 +21,12 @@ class ProfileQueries:
     def _select_profile_query( cls, where_clause: str ) -> str:
         fields = ", ".join(cls.PROFILE_FIELDS)
         
-        return f"SELECT { fields } FROM Profile WHERE { where_clause } LIMIT 1"
+        return (
+            "SELECT "
+            f"{ fields } "
+            "FROM Profile "
+            f"WHERE { where_clause } LIMIT 1"
+        )
 
     @staticmethod
     def _escape_soql_value( value: str ) -> str:

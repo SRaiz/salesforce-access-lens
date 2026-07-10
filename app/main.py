@@ -3,7 +3,12 @@ from app.config import Environment, ConfigFactory
 from app.salesforce.auth import AuthConfig, JWTBuilder, OAuthClient, SalesforceAuthenticator
 from app.salesforce.client import SalesforceClient
 from app.salesforce.domain import SalesforceAuthSession, SalesforceConfig
-from app.salesforce.repositories import UserRepository, ProfileRepository
+from app.salesforce.repositories import (
+    UserRepository, 
+    ProfileRepository, 
+    PermissionSetRepository, 
+    PermissionSetAssignmentRepository
+)
 from app.salesforce.query import SoqlQueryExecutor
 
 def main() -> None:
@@ -54,6 +59,50 @@ def main() -> None:
     
     print( "Profile fetched successfully!" )
     print( profile )
+    
+    permission_set_assignment_repository = PermissionSetAssignmentRepository( query_executor )
+    permission_set_repository = PermissionSetRepository( query_executor )
+
+    permission_set_assignments = permission_set_assignment_repository.find_by_user_id(
+        user.user_id
+    )
+
+    permission_set_ids = {
+        assignment.permission_set_id
+        for assignment in permission_set_assignments
+    }
+
+    permission_sets = permission_set_repository.find_by_ids(
+        permission_set_ids
+    )
+
+    print( "Permission Set Assignments fetched successfully!" )
+    print( f"Assignment Count: { len( permission_set_assignments )}" )
+
+    print( "Permission Sets fetched successfully!" )
+    print( f"Permission Set Count: { len( permission_sets )}" )
+
+    profile_owned_permission_sets = [
+        permission_set
+        for permission_set in permission_sets
+        if permission_set.is_profile_owned()
+    ]
+
+    assigned_permission_sets = [
+        permission_set
+        for permission_set in permission_sets
+        if permission_set.is_standalone_permission_set()
+    ]
+
+    print( "\n================ Profile-owned Permission Sets ================\n" )
+
+    for permission_set in profile_owned_permission_sets:
+        print( permission_set )
+
+    print( "\n================ Explicitly Assigned Permission Sets ================\n" )
+
+    for permission_set in assigned_permission_sets:
+        print( permission_set )
 
 if __name__ == "__main__":
     main()
