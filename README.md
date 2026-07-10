@@ -249,7 +249,7 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 - [x] PermissionSet Entity
 - [x] PermissionSetAssignment Entity
 - [ ] PermissionSetGroup Entity
-- [ ] ObjectPermission Entity
+- [x] ObjectPermission Entity
 - [ ] FieldPermission Entity
 
 ## Data Access Layer
@@ -258,7 +258,7 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 - [x] Permission Set Repository
 - [x] Permission Set Assignment Repository
 - [ ] Permission Set Group Repository
-- [ ] Object Permission Repository
+- [x] Object Permission Repository
 - [ ] Field Permission Repository
 
 ## Application Layer
