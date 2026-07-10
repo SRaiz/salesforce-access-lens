@@ -7,6 +7,7 @@ from app.salesforce.repositories import (
     UserRepository, 
     ProfileRepository, 
     PermissionSetRepository, 
+    FieldPermissionRepository, 
     ObjectPermissionRepository, 
     PermissionSetAssignmentRepository
 )
@@ -61,8 +62,8 @@ def main() -> None:
     print( "Profile fetched successfully!" )
     print( profile )
     
-    permission_set_assignment_repository = PermissionSetAssignmentRepository( query_executor )
-    permission_set_repository = PermissionSetRepository( query_executor )
+    permission_set_assignment_repository            = PermissionSetAssignmentRepository( query_executor )
+    permission_set_repository                       = PermissionSetRepository( query_executor )
 
     permission_set_assignments = permission_set_assignment_repository.find_by_user_id(
         user.user_id
@@ -105,9 +106,7 @@ def main() -> None:
     for permission_set in assigned_permission_sets:
         print( permission_set )
         
-    object_permission_repository = ObjectPermissionRepository(
-        query_executor
-    )
+    object_permission_repository                    = ObjectPermissionRepository( query_executor )
 
     permission_set_ids = {
         permission_set.permission_set_id
@@ -133,6 +132,26 @@ def main() -> None:
 
     for object_permission in account_permissions:
         print( object_permission )
+        
+    field_permission_repository                     = FieldPermissionRepository( query_executor )
+
+    field_permissions = field_permission_repository.find_by_parent_ids(
+        permission_set_ids
+    )
+    
+    print( "\nField Permissions fetched successfully!" )
+    print( f"Field Permission Count: { len( field_permissions )}" )
+    
+    annual_revenue_permissions = [
+        field_permission
+        for field_permission in field_permissions
+        if field_permission.field_api_name == "Account.AnnualRevenue"
+    ]
+
+    print(  "\n================ Account.AnnualRevenue Permissions ================\n" )
+
+    for field_permission in annual_revenue_permissions:
+        print( field_permission )
 
 if __name__ == "__main__":
     main()
