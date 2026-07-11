@@ -262,6 +262,8 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 - [x] Field Permission Repository
 
 ## Application Layer
+- [x] Access Lens Service
+- [x] User Access Analysis
 - [ ] Access Resolution Engine
 - [ ] Access Explanation Engine
 - [ ] Permission Analysis Service
