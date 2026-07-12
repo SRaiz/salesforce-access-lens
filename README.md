@@ -264,6 +264,10 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 ## Application Layer
 - [x] Access Lens Service
 - [x] User Access Analysis
+- [x] Permission Set Analysis
+- [x] Permission-source grouping
+- [x] Object access capability checks
+- [x] Field access capability checks
 - [ ] Access Resolution Engine
 - [ ] Access Explanation Engine
 - [ ] Permission Analysis Service

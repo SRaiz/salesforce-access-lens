@@ -1,5 +1,5 @@
 from app.utils import Validation
-from app.application import UserAccessAnalysis
+from app.application import UserAccessAnalysis, PermissionSetAnalysis
 from app.salesforce.repositories import (
     UserRepository, 
     ProfileRepository, 
@@ -70,20 +70,6 @@ class AccessLensService:
         
         permission_sets = self._find_permission_sets( user.user_id )
         
-        profile_permission_sets = list(
-            filter(
-                lambda permission_set: permission_set.is_profile_owned(), 
-                permission_sets
-            )
-        )
-        
-        assigned_permission_sets = list(
-            filter(
-                lambda permission_set: permission_set.is_standalone_permission_set(), 
-                permission_sets
-            )
-        )
-        
         permission_set_ids = {
             permission_set.permission_set_id
             for permission_set in permission_sets
@@ -92,13 +78,31 @@ class AccessLensService:
         object_permissions = self._find_object_permissions( permission_set_ids )
         field_permissions = self._find_field_permissions( permission_set_ids )
         
+        permission_set_analyses = self._build_permission_set_analyses(
+            permission_sets, 
+            object_permissions, 
+            field_permissions
+        )
+        
+        profile_permission_set_analyses = list(
+            filter(
+                lambda analysis: analysis.permission_set.is_profile_owned(), 
+                permission_set_analyses
+            )
+        )
+        
+        assigned_permission_set_analyses = list(
+            filter(
+                lambda analysis: analysis.permission_set.is_standalone_permission_set(), 
+                permission_set_analyses
+            )
+        )
+        
         return UserAccessAnalysis(
-            user                        = user, 
-            profile                     = profile, 
-            profile_permission_sets     = profile_permission_sets, 
-            assigned_permission_sets    = assigned_permission_sets, 
-            object_permissions          = object_permissions, 
-            field_permissions           = field_permissions
+            user                                = user, 
+            profile                             = profile, 
+            profile_permission_set_analyses     = profile_permission_set_analyses, 
+            assigned_permission_set_analyses    = assigned_permission_set_analyses
         )
     
     def _find_user_by_id( self, user_id: str ) -> SalesforceUser:
@@ -169,4 +173,63 @@ class AccessLensService:
 
         return self.field_permission_repository.find_by_parent_ids(
             parent_ids
+        )
+        
+    def _build_permission_set_analyses(
+        self, 
+        permission_sets         : list[ PermissionSet ], 
+        object_permissions      : list[ ObjectPermission ], 
+        field_permissions       : list[ FieldPermission ]
+    ) -> list[ PermissionSetAnalysis ]:
+        # We need to create a map of Permission set Id to its object and field permissions list
+        object_permissions_by_parent = self._group_object_permissions_by_parent( object_permissions )
+        field_permissions_by_parent = self._group_field_permissions_by_parent( field_permissions )
+        
+        return list(
+            map(
+                lambda permission_set: self._build_permission_set_analysis(
+                    permission_set, 
+                    object_permissions_by_parent.get( permission_set.permission_set_id, [] ), 
+                    field_permissions_by_parent.get( permission_set.permission_set_id, [] )
+                ),
+                permission_sets
+            )
+        )
+        
+    def _group_object_permissions_by_parent(
+        self, 
+        object_permissions: list[ ObjectPermission ] 
+    ) -> dict[ str, list[ ObjectPermission ]]:
+        object_permissions_by_parent: dict[ str, list[ ObjectPermission ]] = dict()
+        
+        for permission in object_permissions:
+            object_permissions_by_parent.setdefault(
+                permission.parent_id, []
+            ).append( permission )
+            
+        return object_permissions_by_parent
+        
+    def _group_field_permissions_by_parent(
+        self, 
+        field_permissions: list[ FieldPermission ] 
+    ) -> dict[ str, list[ FieldPermission ]]:
+        field_permissions_by_parent: dict[ str, list[ FieldPermission ]] = dict()
+        
+        for permission in field_permissions:
+            field_permissions_by_parent.setdefault(
+                permission.parent_id, []
+            ).append( permission )
+            
+        return field_permissions_by_parent
+            
+    def _build_permission_set_analysis(
+        self, 
+        permission_set      : PermissionSet, 
+        object_permissions  : list[ ObjectPermission ], 
+        field_permissions   : list[ FieldPermission ]
+    ) -> PermissionSetAnalysis:
+        return PermissionSetAnalysis(
+            permission_set          = permission_set,
+            object_permissions      = object_permissions, 
+            field_permissions       = field_permissions
         )
