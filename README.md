@@ -272,6 +272,14 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 - [ ] Access Explanation Engine
 - [ ] Permission Analysis Service
 
+### Object Access Explanations
+
+- [x] Calculate effective object permissions across all sources
+- [x] Preserve profile and permission-set provenance
+- [x] Explain read, create, edit, and delete access
+- [x] Explain View All Records and Modify All Records
+- [x] Handle objects with no permission sources
+
 ## MCP Integration
 - [ ] MCP Server
 - [ ] MCP Tools

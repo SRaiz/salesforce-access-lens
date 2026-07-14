@@ -81,15 +81,24 @@ def main() -> None:
     print( "\nAccess Analysis completed successfully!" )
     print( analysis )
     
-    print( "Can Read Account:", analysis.can_read_object( "Account" ))
-    print( "Can Create Account:", analysis.can_create_object( "Account" ))
-    print( "Can Edit Account:", analysis.can_edit_object( "Account" ))
-    print( "Can Delete Account:", analysis.can_delete_object( "Account" ))
-    print( "Can Read UnknownObject:", analysis.can_read_object( "UnknownObject" ))
+    account_explanation = analysis.explain_object_access(
+        "Account"
+    )
+
+    print( "\n================ Account Access Explanation ================" )
+    print( account_explanation )
+
+    unknown_object_explanation = analysis.explain_object_access(
+        "UnknownObject"
+    )
+
+    print( "\n================ Unknown Object Explanation ================" )
+    print( unknown_object_explanation )
     
-    print( "Can Read Account.AnnualRevenue:", analysis.can_read_field( "Account", "AnnualRevenue" ))
-    print( "Can Edit Account.AnnualRevenue:", analysis.can_edit_field( "Account", "AnnualRevenue" ))
-    print( "Can Read UnknownObject.UnknownField:",  analysis.can_read_field( "UnknownObject", "UnknownField" ))
+    print( "\n================ Account Permission Sources ================")
+
+    for source in account_explanation.sources:
+        print( source )
 
 
 if __name__ == "__main__":
