@@ -280,6 +280,14 @@ Architecture decisions are documented in `ARCHITECTURE.md`.
 - [x] Explain View All Records and Modify All Records
 - [x] Handle objects with no permission sources
 
+### Field Access Explanations
+
+- [x] Calculate field permissions across all sources
+- [x] Preserve profile and permission-set provenance
+- [x] Explain field read access
+- [x] Explain field edit access
+- [x] Handle fields with no permission sources
+
 ## MCP Integration
 - [ ] MCP Server
 - [ ] MCP Tools

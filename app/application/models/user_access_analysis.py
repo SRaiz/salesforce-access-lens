@@ -2,6 +2,8 @@ from app.utils import Validation
 from .permission_set_analysis import PermissionSetAnalysis
 from .object_permission_source import ObjectPermissionSource
 from .object_access_explanation import ObjectAccessExplanation
+from .field_permission_source import FieldPermissionSource
+from .field_access_explanation import FieldAccessExplanation
 from app.salesforce.domain import (
     SalesforceUser,
     Profile, 
@@ -139,16 +141,12 @@ class UserAccessAnalysis:
         field_name  : str
     ) -> bool:
         
-        permission = self.get_field_permission(
-            object_name, 
+        explanation = self.explain_field_access(
+            object_name,
             field_name
         )
-        
-        return (
-            permission.can_read 
-            if permission is not None 
-            else False
-        )
+
+        return explanation.can_read()
         
     def can_edit_field(
         self, 
@@ -156,16 +154,12 @@ class UserAccessAnalysis:
         field_name  : str
     ) -> bool:
         
-        permission = self.get_field_permission(
-            object_name, 
+        explanation = self.explain_field_access(
+            object_name,
             field_name
         )
-        
-        return (
-            permission.can_edit 
-            if permission is not None 
-            else False
-        )
+
+        return explanation.can_edit()
         
     def explain_object_access(
         self, 
@@ -225,6 +219,69 @@ class UserAccessAnalysis:
             profile             = profile
         )
         
+    def explain_field_access(
+        self, 
+        object_name : str, 
+        field_name  : str
+    ) -> FieldAccessExplanation:
+        
+        """
+        Explains the user's effective access to an object across
+        every contributing Permission Set.
+        """
+        Validation.validate_required( "object_name", object_name )
+        Validation.validate_required( "field_name", field_name )
+        
+        possible_sources = map(
+            lambda permission_set_analysis: (
+                self._build_field_permission_source(
+                    permission_set_analysis, 
+                    object_name, 
+                    field_name
+                )
+            ), 
+            self.all_permission_set_analyses
+        )
+        
+        sources = list(
+            filter(
+                lambda source: source is not None,
+                possible_sources
+            )
+        )
+        
+        return FieldAccessExplanation(
+            object_name     = object_name, 
+            field_name      = field_name, 
+            sources         = sources
+        )
+        
+    def _build_field_permission_source(
+        self, 
+        permission_set_analysis     : PermissionSetAnalysis, 
+        object_name                 : str, 
+        field_name                  : str
+    ) -> FieldPermissionSource | None:
+        
+        field_permission = permission_set_analysis.get_field_permission(
+            object_name, 
+            field_name
+        )
+        
+        if field_permission is None:
+            return None
+        
+        profile = (
+            self.profile 
+            if permission_set_analysis.permission_set.is_profile_owned() 
+            else None
+        )
+        
+        return FieldPermissionSource(
+            permission_set      = permission_set_analysis.permission_set, 
+            field_permission    = field_permission, 
+            profile             = profile
+        )
         
     def __repr__( self ):
         return (

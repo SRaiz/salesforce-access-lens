@@ -81,23 +81,46 @@ def main() -> None:
     print( "\nAccess Analysis completed successfully!" )
     print( analysis )
     
+    # Analyze the Salesforce user access for account object
     account_explanation = analysis.explain_object_access(
         "Account"
     )
-
     print( "\n================ Account Access Explanation ================" )
     print( account_explanation )
 
     unknown_object_explanation = analysis.explain_object_access(
         "UnknownObject"
     )
-
     print( "\n================ Unknown Object Explanation ================" )
     print( unknown_object_explanation )
     
     print( "\n================ Account Permission Sources ================")
-
     for source in account_explanation.sources:
+        print( source )
+    
+    # Analyze the Salesforce user access for account object field AnnualRevenue    
+    account_annual_revenue_explanation = (
+        analysis.explain_field_access(
+            "Account",
+            "AnnualRevenue"
+        )
+    )
+    print( "\n======== Account.AnnualRevenue Field Access Explanation ========" )
+    print( account_annual_revenue_explanation )
+
+
+    unknown_field_explanation = (
+        analysis.explain_field_access(
+            "UnknownObject",
+            "UnknownField"
+        )
+    )
+    print( "\n========== Unknown Object's Field Explanation ==========" )
+    print( unknown_field_explanation )
+
+
+    print( "\n========== Account.AnnualRevenue Permission Sources ==========")
+    for source in account_annual_revenue_explanation.sources:
         print( source )
 
 

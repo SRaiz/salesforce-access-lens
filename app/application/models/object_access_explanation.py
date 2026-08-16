@@ -1,5 +1,4 @@
 from app.utils import Validation
-
 from .object_permission_source import ObjectPermissionSource
 
 
