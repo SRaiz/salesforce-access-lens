@@ -27,7 +27,7 @@ Each lesson follows this process:
 |---|---|---|
 | 01 | Why MCP Exists | Completed |
 | 02 | Host, Client, Server, and Transport | Completed |
-| 03 | Tools, Resources, and Prompts | Not Started |
+| 03 | Tools, Resources, and Prompts | Completed |
 | 04 | MCP Protocol Lifecycle | Not Started |
 | 05 | Streamable HTTP | Not Started |
 | 06 | Salesforce Access Lens MCP Foundation | Not Started |
