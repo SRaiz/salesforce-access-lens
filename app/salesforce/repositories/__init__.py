@@ -6,10 +6,10 @@ from .object_permission_repository import ObjectPermissionRepository
 from .permission_set_assignment_repository import PermissionSetAssignmentRepository
 
 __all__ = [
-    UserRepository, 
-    ProfileRepository, 
-    PermissionSetRepository, 
-    FieldPermissionRepository, 
-    ObjectPermissionRepository, 
-    PermissionSetAssignmentRepository
+    "UserRepository", 
+    "ProfileRepository", 
+    "PermissionSetRepository", 
+    "FieldPermissionRepository", 
+    "ObjectPermissionRepository", 
+    "PermissionSetAssignmentRepository"
 ]

@@ -7,11 +7,11 @@ from .object_permission_queries import ObjectPermissionQueries
 from .permission_set_assignment_queries import PermissionSetAssignmentQueries
 
 __all__ = [
-    UserQueries, 
-    ProfileQueries, 
-    SoqlQueryExecutor, 
-    PermissionSetQueries, 
-    FieldPermissionQueries, 
-    ObjectPermissionQueries, 
-    PermissionSetAssignmentQueries
+    "UserQueries", 
+    "ProfileQueries", 
+    "SoqlQueryExecutor", 
+    "PermissionSetQueries", 
+    "FieldPermissionQueries", 
+    "ObjectPermissionQueries", 
+    "PermissionSetAssignmentQueries"
 ]

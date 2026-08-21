@@ -8,12 +8,12 @@ from .salesforce_auth_session import SalesforceAuthSession
 from .permission_set_assignment import PermissionSetAssignment
 
 __all__ = [
-    Profile, 
-    PermissionSet, 
-    SalesforceUser, 
-    FieldPermission,  
-    ObjectPermission, 
-    SalesforceConfig, 
-    SalesforceAuthSession, 
-    PermissionSetAssignment
+    "Profile", 
+    "PermissionSet", 
+    "SalesforceUser", 
+    "FieldPermission",  
+    "ObjectPermission", 
+    "SalesforceConfig", 
+    "SalesforceAuthSession", 
+    "PermissionSetAssignment"
 ]

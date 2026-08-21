@@ -6,10 +6,10 @@ from .object_permission_mapper import ObjectPermissionMapper
 from .permission_set_assignment_mapper import PermissionSetAssignmentMapper
 
 __all__ = [
-    UserMapper, 
-    ProfileMapper, 
-    PermissionSetMapper, 
-    FieldPermissionMapper, 
-    ObjectPermissionMapper, 
-    PermissionSetAssignmentMapper
+    "UserMapper", 
+    "ProfileMapper", 
+    "PermissionSetMapper", 
+    "FieldPermissionMapper", 
+    "ObjectPermissionMapper", 
+    "PermissionSetAssignmentMapper"
 ]
